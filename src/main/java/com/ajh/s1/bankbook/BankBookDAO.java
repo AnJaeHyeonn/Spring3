@@ -6,13 +6,29 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.ajh.s1.utill.DBConnector;
 
+@Repository //("dao") 객체 위임 시 이름을 dao로 설정 한 것
 public class BankBookDAO {
 
-	public BankBookDTO getSelect(BankBookDTO bankBookDTO) {
+	private DBConnector dbConnector;
 
-		DBConnector dbConnector = new DBConnector();
+	public BankBookDAO() {
+	}
+
+	@Autowired
+	public BankBookDAO(DBConnector dbConnector) {
+		this.dbConnector = dbConnector;
+	}
+
+	public void setDbConnector(DBConnector dbConnector) {
+		this.dbConnector = dbConnector;
+	}
+
+	public BankBookDTO getSelect(BankBookDTO bankBookDTO) {
 
 		Connection con = null;
 		PreparedStatement st = null;
