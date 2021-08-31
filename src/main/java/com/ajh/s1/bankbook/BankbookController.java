@@ -1,5 +1,7 @@
 package com.ajh.s1.bankbook;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
@@ -9,20 +11,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ajh.s1.utill.DBConnector;
+
 @Controller
 @RequestMapping("/bankbook/*")
 public class BankbookController {
 	// POJO (Plain Old Java Object)
 
+	private BankbookService bankbookService;
+
+	public BankbookController() {
+		bankbookService = new BankbookService();
+	}
+
 	@RequestMapping(value = "bankbookList.do", method = RequestMethod.GET)
-	public ModelAndView list(Integer[] num) {
+	public ModelAndView list(ModelAndView mv) {
+		
+		ArrayList<BankBookDTO> ar = bankbookService.getList();
 
-		for (Integer i : num) {
-			System.out.println(i);
-		}
 		System.out.println("bankbook list");
-
-		ModelAndView mv = new ModelAndView();
+		
+		mv.addObject("list", ar);
 		mv.setViewName("bankbook/bankbookList");
 		return mv;
 	}
@@ -35,7 +44,7 @@ public class BankbookController {
 		BankBookDTO bankBookDTO = new BankBookDTO();
 		bankBookDTO.setBookName("BookName");
 		model.addAttribute("test", "iu");
-		model.addAttribute("dto",bankBookDTO);
+		model.addAttribute("dto", bankBookDTO);
 		System.out.println("bankbook select");
 
 //		return "bankbook/bankbookSelect";
