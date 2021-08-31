@@ -6,13 +6,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.ajh.s1.utill.DBConnector;
+import javax.inject.Inject;
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class BankBookDAO {
 
-	public BankBookDTO getSelect(BankBookDTO bankBookDTO) {
+	@Autowired
+	private DataSource dataSource;
 
-		DBConnector dbConnector = new DBConnector();
+	public BankBookDTO getSelect(BankBookDTO bankBookDTO) {
 
 		Connection con = null;
 		PreparedStatement st = null;
@@ -24,7 +28,7 @@ public class BankBookDAO {
 
 			String sql = "SELECT * FROM BANKBOOK WHERE BOOKNUMBER=?";
 
-			con = dbConnector.getConnect();
+			con = dataSource.getConnection();
 
 			st = con.prepareStatement(sql);
 			st.setLong(1, bankBookDTO.getBookNumber());
@@ -42,7 +46,6 @@ public class BankBookDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			dbConnector.disConnect(rs, st, con);
 		}
 
 		return bbDTO;
@@ -50,7 +53,6 @@ public class BankBookDAO {
 	}
 
 	public ArrayList<BankBookDTO> getList() {
-		DBConnector dbConnector = new DBConnector();
 
 		Connection con = null;
 		PreparedStatement st = null;
@@ -63,7 +65,7 @@ public class BankBookDAO {
 		try {
 			String sql = "SELECT * FROM BANKBOOK";
 
-			con = dbConnector.getConnect();
+			con = con = dataSource.getConnection();
 			st = con.prepareStatement(sql);
 			rs = st.executeQuery();
 
@@ -81,7 +83,6 @@ public class BankBookDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			dbConnector.disConnect(rs, st, con);
 		}
 
 		return ar;
@@ -89,7 +90,6 @@ public class BankBookDAO {
 	}
 
 	public int setInsert(BankBookDTO bankBookDTO) {
-		DBConnector dbConnector = new DBConnector();
 
 		Connection con = null;
 		PreparedStatement st = null;
@@ -97,7 +97,7 @@ public class BankBookDAO {
 		int result = 0;
 
 		try {
-			con = dbConnector.getConnect();
+			con = con = dataSource.getConnection();
 
 			String sql = "INSERT INTO BANKBOOK VALUES(BANKBOOK_SEQ.NEXTVAL,?,?,?)";
 
@@ -112,7 +112,6 @@ public class BankBookDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			dbConnector.disConnect(st, con);
 
 		}
 
