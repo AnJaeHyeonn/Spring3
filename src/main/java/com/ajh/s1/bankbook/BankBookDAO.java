@@ -11,16 +11,11 @@ import org.springframework.stereotype.Repository;
 
 import com.ajh.s1.utill.DBConnector;
 
-@Repository //("dao") 객체 위임 시 이름을 dao로 설정 한 것
 public class BankBookDAO {
 
 	private DBConnector dbConnector;
 
-	public BankBookDAO() {
-	}
-
-	@Autowired
-	public BankBookDAO(DBConnector dbConnector) {
+	public BankBookDAO(DBConnector dbConnector, int num, String name) {
 		this.dbConnector = dbConnector;
 	}
 

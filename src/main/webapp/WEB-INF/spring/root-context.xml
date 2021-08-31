@@ -2,7 +2,37 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
-	
+
 	<!-- Root Context: defines shared resources visible to all other web components -->
+
+	<!-- 객체 생성, 주입 -->
+	
+	<!-- DBConnector db = new DBConnector(); -->
+	<bean class="com.ajh.s1.utill.DBConnector" id="dBConnector"></bean>
+
+
+	<!-- BankBookDAO dao = new BankBookDAO(dbconnector); -->
+	<bean class="com.ajh.s1.bankbook.BankBookDAO" id="bankBookDAO">
+<!--
+	 	<constructor-arg index="0" ref="dBConnector"></constructor-arg>
+		<constructor-arg index="1" value="10"></constructor-arg>
+		<constructor-arg index="2" value="안재현"></constructor-arg>
+-->
 		
+<!-- 	<constructor-arg type = "com.ajh.s1.utill.DBConnector" ref="dBConnector"></constructor-arg>
+		<constructor-arg type = "int" value="10"></constructor-arg>
+		<constructor-arg type = "java.lang.String" value="안재현"></constructor-arg>
+-->
+		
+		<constructor-arg name="dbConnector" ref="dBConnector"></constructor-arg>
+		<constructor-arg name="num" value ="10"></constructor-arg>
+		<constructor-arg name="name" value ="안재현"></constructor-arg>
+	</bean>
+	
+	
+	<!-- BankbookService bankbookService = new BankbookService(); -->
+	<bean class="com.ajh.s1.bankbook.BankbookService" id="bankbookService">
+		<!-- setXXX -->
+		<property name="bankBookDAO" ref="bankBookDAO"></property>
+	</bean>
 </beans>

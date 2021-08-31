@@ -12,7 +12,7 @@
 	<c:import url="../temp/boot_nav.jsp"></c:import>
 	<div class="container-fluid">
 		<div class="col-md-8 mx-auto my-0">
-			<table class="table table-hover">
+			<table class="table table-striped table-hover">
 				<tr>
 					<th>Number</th>
 					<th>Name</th>

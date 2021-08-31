@@ -9,6 +9,8 @@
 <body>
 	<c:import url="./temp/boot_nav.jsp"></c:import>
 	
+	<img src="./resources/images/jc.jpg">
+	
 	<h1>Renewal</h1>
 </body>
 </html>
