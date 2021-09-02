@@ -1,53 +1,55 @@
 package com.ajh.s1.bankbook;
 
-import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/bankbook/*")
 public class BankbookController {
-	// POJO (Plain Old Java Object)
 
-	@RequestMapping(value = "bankbookList.do", method = RequestMethod.GET)
-	public ModelAndView list(Integer[] num) {
+	@Autowired
+	private BankBookService bankBookService;
 
-		for (Integer i : num) {
-			System.out.println(i);
-		}
-		System.out.println("bankbook list");
+	@RequestMapping("bankbookList")
+	public ModelAndView list(ModelAndView mv) {
 
-		ModelAndView mv = new ModelAndView();
+		List<BankBookDTO> ar = bankBookService.getList();
+		mv.addObject("list", ar);
 		mv.setViewName("bankbook/bankbookList");
+
 		return mv;
 	}
 
 	@RequestMapping("bankbookSelect")
-	public void select(@RequestParam(defaultValue = "1", value = "n") Integer num, String name, Model model) {
+	public void select(BankBookDTO bankBookDTO, Model model) {
 
-		System.out.println("Value : " + num);
-		System.out.println("Name : " + name);
-		BankBookDTO bankBookDTO = new BankBookDTO();
-		bankBookDTO.setBookName("BookName");
-		model.addAttribute("test", "iu");
-		model.addAttribute("dto",bankBookDTO);
-		System.out.println("bankbook select");
+		bankBookDTO = bankBookService.getSelect(bankBookDTO);
+		model.addAttribute("dtov", bankBookDTO);
 
-//		return "bankbook/bankbookSelect";
 	}
 
-	@RequestMapping("bankbookInsert.do")
+	@RequestMapping(value="bankbookInsert", method=RequestMethod.GET)
+	public void insert() {
+	}
+
+	@RequestMapping(value="bankbookInsert", method=RequestMethod.POST)
 	public String insert(BankBookDTO bankBookDTO) {
-
-		System.out.println(bankBookDTO.getBookName());
-		System.out.println("insert");
-
-		return "redirect:../";
-
+		int result = bankBookService.setInsert(bankBookDTO);
+		
+		return "redirect:./bankbookList";
+	}
+	
+	@RequestMapping("bankbookDelete")
+	public String delete(Long bookNumber) {
+		int result = bankBookService.setDelete(bookNumber);
+		
+		return "redirect:./bankbookList";
 	}
 }

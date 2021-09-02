@@ -4,12 +4,32 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
 <title>Insert title here</title>
 <c:import url="../temp/boot_head.jsp"></c:import>
 </head>
+
 <body>
 	<c:import url="../temp/boot_nav.jsp"></c:import>
-	<h1>List Renewal</h1>
+	<div class="container-fluid">
+		<div class="col-md-7 mx-auto my-2">
+			<table class="table table-hover">
+				<tr>
+					<th>Number</th>
+					<th>Name</th>
+					<th>Rate</th>
+				</tr>
+				<c:forEach items="${list}" var="dto">
+					<tr>
+						<td>${dto.bookNumber}</td>
+						<td><a href="./bankbookSelect?bookNumber=${dto.bookNumber}">${dto.bookName}</a></td>
+						<td>${dto.bookRate}</td>
+					</tr>
+				</c:forEach>
+			</table>
+			<a href="./bankbookInsert" class="btn btn-danger">ADD</a>
+		</div>
+	</div>
 </body>
 </html>
