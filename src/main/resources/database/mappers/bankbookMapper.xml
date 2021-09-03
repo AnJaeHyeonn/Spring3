@@ -21,4 +21,7 @@
 		DELETE BANKBOOK WHERE BOOKNUMBER=#{bookNumber}
 	</delete>
 	
+	<update id="setUpdate" parameterType="com.ajh.s1.bankbook.BankBookDTO">
+		UPDATE BANKBOOK SET BOOKNAME=#{bookName}, BOOKRATE=#{bookRate}, BOOKSALE=#{bookSale} WHERE BOOKNUMBER=#{bookNumber}
+	</update>
 </mapper>

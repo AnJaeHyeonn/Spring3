@@ -35,21 +35,33 @@ public class BankbookController {
 
 	}
 
-	@RequestMapping(value="bankbookInsert", method=RequestMethod.GET)
+	@RequestMapping(value = "bankbookInsert", method = RequestMethod.GET)
 	public void insert() {
 	}
 
-	@RequestMapping(value="bankbookInsert", method=RequestMethod.POST)
+	@RequestMapping(value = "bankbookInsert", method = RequestMethod.POST)
 	public String insert(BankBookDTO bankBookDTO) {
 		int result = bankBookService.setInsert(bankBookDTO);
-		
+
 		return "redirect:./bankbookList";
 	}
-	
+
 	@RequestMapping("bankbookDelete")
 	public String delete(Long bookNumber) {
 		int result = bankBookService.setDelete(bookNumber);
-		
+
 		return "redirect:./bankbookList";
+	}
+
+	@RequestMapping(value = "bankbookUpdate", method = RequestMethod.GET)
+	public ModelAndView update(BankBookDTO bankBookDTO) {
+		bankBookDTO = bankBookService.getSelect(bankBookDTO);
+
+		ModelAndView mv = new ModelAndView();
+
+		mv.setViewName("bankbook/bankbookUpdate"); // jsp의 경로명
+		mv.addObject("dto", bankBookDTO);
+
+		return mv;
 	}
 }

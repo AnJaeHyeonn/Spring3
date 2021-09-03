@@ -33,4 +33,9 @@ public class BankBookDAO {
 		return sqlSession.delete(NAMESPACE + "setDelete", bookNumber);
 	}
 
+	public int setUpdate(BankBookDTO bankBookDTO) {
+		return sqlSession.update(NAMESPACE + "setUpdate", bankBookDTO);
+
+	}
+
 }
