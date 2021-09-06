@@ -2,26 +2,69 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
+
 <mapper namespace="com.ajh.s1.bankbook.BankBookDAO">
 
-	<select id="getSelect" parameterType="com.ajh.s1.bankbook.BankBookDTO" resultType="com.ajh.s1.bankbook.BankBookDTO">
+	<select id="getSelect"
+		parameterType="com.ajh.s1.bankbook.BankBookDTO"
+		resultType="com.ajh.s1.bankbook.BankBookDTO">
 		SELECT * FROM BANKBOOK WHERE BOOKNUMBER=#{bookNumber}
 	</select>
-	
-	<select id="getList" resultType="com.ajh.s1.bankbook.BankBookDTO" parameterType="com.ajh.s1.util.Pager">
-		SELECT * FROM (SELECT ROWNUM R, BK.* FROM (SELECT * FROM BANKBOOK ORDER BY BOOKNUMBER DESC) BK) WHERE R BETWEEN #{startRow} AND #{lastRow}
+
+	<select id="getList"
+		resultType="com.ajh.s1.bankbook.BankBookDTO"
+		parameterType="com.ajh.s1.util.Pager">
+		SELECT * FROM (SELECT ROWNUM R, BK.* FROM (SELECT * FROM BANKBOOK
+		WHERE
+		<choose>
+			<when test="kind == 'num'">
+				bookNumber
+			</when>
+			<when test="kind == 'name'">
+				bookName
+			</when>
+			<otherwise>
+				bookRate
+			</otherwise>
+		</choose>
+		LIKE '%' || #{search} || '%' ORDER BY BOOKNUMBER DESC) BK)
+		WHERE R BETWEEN #{startRow} AND #{lastRow}
 	</select>
-	
-	<insert id="setInsert" parameterType="com.ajh.s1.bankbook.BankBookDTO">
-		INSERT INTO BANKBOOK (bookNumber, bookName, bookRate, bookSale) VALUES(BANKBOOK_SEQ.NEXTVAL, #{bookName}, #{bookRate}, #{bookSale})
+
+	<insert id="setInsert"
+		parameterType="com.ajh.s1.bankbook.BankBookDTO">
+		INSERT INTO BANKBOOK (bookNumber, bookName, bookRate,
+		bookSale) VALUES(BANKBOOK_SEQ.NEXTVAL, #{bookName}, #{bookRate},
+		#{bookSale})
 	</insert>
-	
+
 	<delete id="setDelete" parameterType="java.lang.Long">
-		DELETE BANKBOOK WHERE BOOKNUMBER=#{bookNumber}
+		DELETE BANKBOOK WHERE
+		BOOKNUMBER=#{bookNumber}
 	</delete>
-	
-	<update id="setUpdate" parameterType="com.ajh.s1.bankbook.BankBookDTO">
-		UPDATE BANKBOOK SET BOOKNAME=#{bookName}, BOOKRATE=#{bookRate}, BOOKSALE=#{bookSale} WHERE BOOKNUMBER=#{bookNumber}
+
+	<update id="setUpdate"
+		parameterType="com.ajh.s1.bankbook.BankBookDTO">
+		UPDATE BANKBOOK SET BOOKNAME=#{bookName},
+		BOOKRATE=#{bookRate}, BOOKSALE=#{bookSale} WHERE
+		BOOKNUMBER=#{bookNumber}
 	</update>
+
+	<select id="getCount" resultType="java.lang.Long" parameterType="com.ajh.s1.util.Pager">
+		SELECT COUNT(BOOKNUMBER) FROM BANKBOOK
+		WHERE
+		<choose>
+			<when test="kind == 'num'">
+				bookNumber
+			</when>
+			<when test="kind == 'name'">
+				bookName
+			</when>
+			<otherwise>
+				bookRate
+			</otherwise>
+		</choose>
+		LIKE '%' || #{search} || '%'
+	</select>
+
 </mapper>

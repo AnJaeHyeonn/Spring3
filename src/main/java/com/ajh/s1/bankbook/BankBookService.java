@@ -18,20 +18,26 @@ public class BankBookService {
 	}
 
 	public List<BankBookDTO> getList(Pager pager) {
+		
+		System.out.println(pager.getKind());
+		System.out.println(pager.getSearch());
+
+		Long totalCount = bankBookDAO.getCount(pager);
+
+		pager.makeNum(totalCount);
 		pager.makeRow();
-		pager.makeNum();
 		return bankBookDAO.getList(pager);
 	}
-	
-	public int setInsert (BankBookDTO bankBookDTO) {
+
+	public int setInsert(BankBookDTO bankBookDTO) {
 		return bankBookDAO.setInsert(bankBookDTO);
 	}
-	
-	public int setDelete (Long bookNumber) {
+
+	public int setDelete(Long bookNumber) {
 		return bankBookDAO.setDelete(bookNumber);
 	}
-	
-	public int setUpdate (BankBookDTO bankBookDTO) {
+
+	public int setUpdate(BankBookDTO bankBookDTO) {
 		return bankBookDAO.setUpdate(bankBookDTO);
 	}
 
